@@ -18,52 +18,46 @@
         </div>
 
         <div id="dashboard-content">
-            <!-- Servers Status Container -->
             <div id="servers-status-container">
                 <p class="message">No servers configured</p>
             </div>
         </div>
 
-        <!-- Settings Tab -->
-        <div id="settings-content" class="hidden flex-1 overflow-y-auto p-4">
-            <!-- Server Configuration -->
-            <div class="mb-6">
-                <h3 class="text-md font-bold mb-3">Servers</h3>
+        <div id="settings-content" class="hidden">
+            <div class="server-config">
+                <h3 class="header-section">Servers</h3>
                 
-                <div id="servers-list" class="space-y-2 mb-3">
-                    <p class="text-gray-400 text-sm">No servers configured</p>
+                <div id="servers-list">
+                    <p class="message">No servers configured</p>
                 </div>
 
                 <!-- Add Server Form -->
-                <div class="bg-gray-800 p-3 rounded mb-3 border border-gray-700">
-                    <input type="text" id="server-ip-input" placeholder="Server IP" class="w-full bg-gray-700 text-white px-3 py-2 rounded mb-2 text-sm" />
-                    <input type="text" id="server-name-input" placeholder="Server Name" class="w-full bg-gray-700 text-white px-3 py-2 rounded mb-2 text-sm" />
-                    <button id="add-server-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm font-semibold">
+                <div class="add-form">
+                    <input type="text" id="server-ip-input" placeholder="Server IP"/>
+                    <input type="text" id="server-name-input" placeholder="Server Name"/>
+                    <button id="add-server-btn" class="btn">
                         Add Server
                     </button>
                 </div>
             </div>
 
-            <!-- Friends Configuration -->
-            <div class="mb-6">
-                <h3 class="text-md font-bold mb-3">Favorite Friends</h3>
+            <div class="friends-config">
+                <h3 class="header-section">Favorite Friends</h3>
                 
-                <div id="friends-list" class="space-y-2 mb-3">
-                    <p class="text-gray-400 text-sm">No friends added</p>
+                <div id="friends-list">
+                    <p class="message">No friends added</p>
                 </div>
 
-                <!-- Add Friend Form -->
-                <div class="bg-gray-800 p-3 rounded mb-3 border border-gray-700">
-                    <input type="text" id="friend-name" placeholder="Friend Name" class="w-full bg-gray-700 text-white px-3 py-2 rounded mb-2 text-sm" />
-                    <button id="add-friend-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm font-semibold">
+                <div class="add-form">
+                    <input type="text" id="friend-name" placeholder="Friend Name"/>
+                    <button id="add-friend-btn" class="btn">
                         Add Friend
                     </button>
                 </div>
 
-                <!-- All Friends Toggle -->
-                <label class="flex items-center bg-gray-800 p-3 rounded border border-gray-700 cursor-pointer">
+                <label class="checkbox-container">
                     <input type="checkbox" id="all-friends-toggle" class="w-4 h-4" />
-                    <span class="ml-2 text-sm">Notify for all players joining</span>
+                    <span class="checkbox-label">Notify for all players joining</span>
                 </label>
             </div>
         </div>

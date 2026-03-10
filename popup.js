@@ -135,7 +135,7 @@ function renderSettings() {
     // Render servers list
     const serversList = document.getElementById('servers-list');
     if (currentData.servers.length === 0) {
-        serversList.innerHTML = '<p class="text-gray-400 text-sm">No servers configured</p>';
+        serversList.innerHTML = '<p class="message">No servers configured</p>';
     } else {
         serversList.innerHTML = currentData.servers.map(server => `
             <div class="server-item">
@@ -147,8 +147,8 @@ function renderSettings() {
                 </div>
                 <div class="server-buttons">
                     ${currentData.primaryServer === server.id 
-                        ? '<button disabled class="btn-small btn-success">Primary</button>' 
-                        : `<button class="btn-small btn-primary btn-set-primary" data-server-id="${server.id}">Set Primary</button>`
+                        ? '<button disabled class="btn-small btn-success" title="Primary Server">📌</button>' 
+                        : `<button class="btn-small btn-primary btn-set-primary" data-server-id="${server.id}" title="Set as Primary Server?">📌</button>`
                     }
                     <button class="btn-small btn-danger btn-remove-server" data-server-id="${server.id}" title="Remove server from list">X</button>
                 </div>
@@ -159,7 +159,7 @@ function renderSettings() {
     // Render friends list
     const friendsList = document.getElementById('friends-list');
     if (currentData.friends.length === 0) {
-        friendsList.innerHTML = '<p class="text-gray-400 text-sm">No friends added</p>';
+        friendsList.innerHTML = '<p class="message">No friends added</p>';
     } else {
         friendsList.innerHTML = currentData.friends.map(friend => `
             <div class="friend-item">
