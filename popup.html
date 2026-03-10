@@ -6,36 +6,21 @@
     <title>Minecraft Server Friends</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-900 text-white">
+<body>
     <div class="popup-container">
-        <!-- Header Tabs -->
-        <div class="flex border-b border-gray-700">
-            <button id="tab-dashboard" class="flex-1 py-3 px-4 text-center border-b-2 border-blue-500 font-semibold">
+        <div class="header-tabs">
+            <button id="tab-dashboard" class="header-tab tab-active">
                 Dashboard
             </button>
-            <button id="tab-settings" class="flex-1 py-3 px-4 text-center border-b-2 border-transparent hover:border-gray-400 cursor-pointer">
+            <button id="tab-settings" class="header-tab">
                 Settings
             </button>
         </div>
 
-        <!-- Dashboard Tab -->
-        <div id="dashboard-content" class="flex-1 overflow-y-auto p-4">
-            <!-- Server Status -->
-            <div id="server-status" class="mb-4">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 id="server-name" class="text-lg font-bold">No Server Selected</h2>
-                    <span id="online-count" class="bg-green-600 text-white px-3 py-1 rounded-full text-sm" style="display: none;">
-                        <span id="player-count">0</span> Online
-                    </span>
-                    <span id="offline-status" class="bg-red-600 text-white px-3 py-1 rounded-full text-sm">
-                        Offline
-                    </span>
-                </div>
-
-                <!-- Players List -->
-                <div id="players-list" class="space-y-2">
-                    <p class="text-gray-400 text-sm">No server selected or server is offline</p>
-                </div>
+        <div id="dashboard-content">
+            <!-- Servers Status Container -->
+            <div id="servers-status-container">
+                <p class="message">No servers configured</p>
             </div>
         </div>
 

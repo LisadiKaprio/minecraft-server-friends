@@ -31,4 +31,9 @@ What I need to build:
 
 Important rules:
 - only use vanilla html + css + javascript, when possible
-- can use tailwind
+
+--------------------------
+
+right now, the dashboard only shows list of players / server status of the primary server. i want it to instead show it for all the servers the user has saved in settings. i think for that popup.js should add the server-status element dynamically for each server?
+also, make sure that if there are more than 5 players in the server, then the list shows only 5 players and then you have to click a button to expand to show all other players on the server.
+make sure to pay attention when you have to replace an html "id" with an html "class"

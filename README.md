@@ -2,15 +2,6 @@
 
 A Chrome extension that lets you track your friends on Minecraft servers with real-time notifications.
 
-## Features
-
-- **Server Tracking**: Add and manage multiple Minecraft servers
-- **Friend Notifications**: Get notified when your favorite friends join or leave
-- **Real-time Status**: See live player lists with avatars
-- **Badge Display**: Shows friend count in a red badge on the extension icon
-- **Secure Storage**: Server IPs are obscured for security
-- **Auto-checking**: Checks server status every minute
-
 ## Installation
 
 1. Clone or download this repository
@@ -27,7 +18,7 @@ A Chrome extension that lets you track your friends on Minecraft servers with re
 2. Go to the "Settings" tab
 3. Enter your server's IP/Port and give it a name
 4. Click "Add Server"
-5. Click "Set Primary" to select which server to track
+5. Click "Set Primary" -> that way, the number on the extension icon will always show the amount of active players on this specific server.
 
 ### Managing Friends
 
@@ -45,38 +36,10 @@ A Chrome extension that lets you track your friends on Minecraft servers with re
 ## Security Notes
 
 - Server IPs are stored locally in your browser's sync storage
-- IPs are displayed as "Click to reveal" by default for security
-- The extension only makes requests to the official Minecraft API and avatar service
 
 ## API Used
 
 - **Server Status**: https://api.mcsrvstat.us/3/
 - **Player Avatars**: https://minotar.net/
 
-## Permissions
-
-- `storage`: To save your server and friend list
-- `alarms`: To check server status every minute
-- `notifications`: To show join/leave notifications
-- `host_permissions`: To access the Minecraft API and avatar service
-
-## Technology
-
-- Vanilla JavaScript, HTML, and CSS
-- Tailwind CSS for styling
-- Chrome Storage API for data persistence
-- Chrome Alarms API for scheduled checks
-
-## Future Improvements
-
-- [ ] Dark/Light theme toggle
-- [ ] Custom notification sounds
-- [ ] Server stats history
-- [ ] Friend status syncing across devices
-- [ ] Custom notification frequency
-- [ ] Server performance metrics
-
----
-
-Made with ♥ for Minecraft players
 

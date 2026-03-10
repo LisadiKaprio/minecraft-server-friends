@@ -47,18 +47,14 @@ function switchTab(tab) {
     if (tab === 'dashboard') {
         dashboardContent.classList.remove('hidden');
         settingsContent.classList.add('hidden');
-        dashboardTab.classList.add('border-blue-500');
-        dashboardTab.classList.remove('border-transparent');
-        settingsTab.classList.remove('border-blue-500');
-        settingsTab.classList.add('border-transparent');
+        dashboardTab.classList.add('tab-active');
+        settingsTab.classList.remove('tab-active');
         refreshServerStatus();
     } else {
         dashboardContent.classList.add('hidden');
         settingsContent.classList.remove('hidden');
-        dashboardTab.classList.remove('border-blue-500');
-        dashboardTab.classList.add('border-transparent');
-        settingsTab.classList.add('border-blue-500');
-        settingsTab.classList.remove('border-transparent');
+        settingsTab.classList.add('tab-active');
+        dashboardTab.classList.remove('tab-active');
         renderSettings();
     }
 }
@@ -146,16 +142,15 @@ function renderSettings() {
                 <div class="server-item-info">
                     <div class="server-item-name">${escapeHtml(server.name)}</div>
                     <div class="server-item-ip reveal-ip" data-ip="${escapeHtml(server.ip)}">
-                        Click to reveal
+                        Click to reveal IP
                     </div>
                 </div>
                 <div class="server-buttons">
-                    <button class="btn-small btn-update" data-server-id="${server.id}">Update</button>
                     ${currentData.primaryServer === server.id 
                         ? '<button disabled class="btn-small btn-success">Primary</button>' 
                         : `<button class="btn-small btn-primary btn-set-primary" data-server-id="${server.id}">Set Primary</button>`
                     }
-                    <button class="btn-small btn-danger btn-remove-server" data-server-id="${server.id}">Remove</button>
+                    <button class="btn-small btn-danger btn-remove-server" data-server-id="${server.id}" title="Remove server from list">X</button>
                 </div>
             </div>
         `).join('');
@@ -169,7 +164,7 @@ function renderSettings() {
         friendsList.innerHTML = currentData.friends.map(friend => `
             <div class="friend-item">
                 <span class="friend-item-name">${escapeHtml(friend)}</span>
-                <button class="btn-small btn-danger btn-remove-friend" data-friend-name="${escapeHtml(friend)}">Remove</button>
+                <button class="btn-small btn-danger btn-remove-friend" data-friend-name="${escapeHtml(friend)}"title="Remove friend from list">X</button>
             </div>
         `).join('');
     }
@@ -205,14 +200,6 @@ function attachEventListeners() {
             removeServer(serverId);
         });
     });
-    
-    document.querySelectorAll('.btn-update').forEach(btn => {
-        btn.addEventListener('click', async function() {
-            const serverId = parseInt(this.dataset.serverId);
-            await checkNow();
-            refreshServerStatus(serverId);
-        });
-    });
 
     // Remove friend buttons
     document.querySelectorAll('.btn-remove-friend').forEach(btn => {
@@ -234,33 +221,64 @@ function toggleIpVisibility(element, ip) {
 }
 
 function refreshServerStatus() {
-    // const statusDiv = document.getElementById('server-status');
-    const primaryServer = currentData.servers.find(s => s.id === currentData.primaryServer);
+    const container = document.getElementById('servers-status-container');
 
-    if (!primaryServer) {
-        document.getElementById('server-name').textContent = 'No Server Selected';
-        document.getElementById('online-count').style.display = 'none';
-        document.getElementById('offline-status').style.display = 'inline-block';
-        document.getElementById('players-list').innerHTML = '<p class="text-gray-400 text-sm">No server selected or server is offline</p>';
+    if (currentData.servers.length === 0) {
+        container.innerHTML = '<p class="message">No servers configured</p>';
         return;
     }
 
-    document.getElementById('server-name').textContent = escapeHtml(primaryServer.name);
+    container.innerHTML = '';
 
-    // Get latest player data from background script
-    chrome.runtime.sendMessage({ action: 'getServerStatus', serverId: primaryServer.id }, (response) => {
-        if (response && response.online && response.players) {
-            document.getElementById('offline-status').style.display = 'none';
-            document.getElementById('online-count').style.display = 'inline-block';
-            document.getElementById('player-count').textContent = response.players.length;
+    for (const server of currentData.servers) {
+        // Create server status element
+        const serverStatusDiv = document.createElement('div');
+        serverStatusDiv.className = 'server-status';
+        serverStatusDiv.id = `server-status-${server.id}`;
 
-            renderPlayersList(response.players);
-        } else {
-            document.getElementById('online-count').style.display = 'none';
-            document.getElementById('offline-status').style.display = 'inline-block';
-            document.getElementById('players-list').innerHTML = '<p class="text-gray-400 text-sm">Server is offline</p>';
-        }
-    });
+        serverStatusDiv.innerHTML = `
+            <div class="server-status-header">
+                <h2 class="server-name">${escapeHtml(server.name)}</h2>
+                <span class="online-count" style="display: none;">
+                    <span class="player-count">0</span> Online
+                </span>
+                <span class="offline-status">
+                    Offline
+                </span>
+            </div>
+            <div class="players-list">
+                <p class="message">Loading...</p>
+            </div>
+        `;
+
+        container.appendChild(serverStatusDiv);
+
+        // Get latest player data from background script
+        chrome.runtime.sendMessage({ action: 'getServerStatus', serverId: server.id }, (response) => {
+            updateServerStatusUI(server.id, response);
+        });
+    }
+}
+
+function updateServerStatusUI(serverId, serverStatus) {
+    const statusElement = document.getElementById(`server-status-${serverId}`);
+    if (!statusElement) return;
+
+    const offlineStatus = statusElement.querySelector('.offline-status');
+    const onlineCount = statusElement.querySelector('.online-count');
+    const playerCount = statusElement.querySelector('.player-count');
+    const playersList = statusElement.querySelector('.players-list');
+
+    if (serverStatus && serverStatus.online && serverStatus.players) {
+        offlineStatus.style.display = 'none';
+        onlineCount.style.display = 'inline-block';
+        playerCount.textContent = serverStatus.players.length;
+        renderPlayersList(serverStatus.players, playersList);
+    } else {
+        onlineCount.style.display = 'none';
+        offlineStatus.style.display = 'inline-block';
+        playersList.innerHTML = '<p class="message">Server is offline</p>';
+    }
 }
 
 function checkNow() {
@@ -269,15 +287,17 @@ function checkNow() {
     });
 }
 
-function renderPlayersList(players) {
-    const playersList = document.getElementById('players-list');
-    
+function renderPlayersList(players, playersList) {
     if (players.length === 0) {
-        playersList.innerHTML = '<p class="text-gray-400 text-sm">No players online</p>';
+        playersList.innerHTML = '<p class="message">No players online</p>';
         return;
     }
 
-    playersList.innerHTML = players.map(player => `
+    const maxVisiblePlayers = 5;
+    const isExpanded = playersList.classList.contains('expanded');
+    const playersToShow = isExpanded ? players : players.slice(0, maxVisiblePlayers);
+
+    let html = playersToShow.map(player => `
         <div class="player-item">
             <img 
                 src="https://minotar.net/avatar/${player.uuid}" 
@@ -288,6 +308,25 @@ function renderPlayersList(players) {
             <span class="player-name">${escapeHtml(player.name)}</span>
         </div>
     `).join('');
+
+    if (players.length > maxVisiblePlayers && !isExpanded) {
+        html += `
+            <button class="expand-players-btn">
+                Show all ${players.length} players
+            </button>
+        `;
+    }
+
+    playersList.innerHTML = html;
+
+    // Attach event listener to expand button
+    const expandBtn = playersList.querySelector('.expand-players-btn');
+    if (expandBtn) {
+        expandBtn.addEventListener('click', () => {
+            playersList.classList.add('expanded');
+            renderPlayersList(players, playersList);
+        });
+    }
 }
 
 function loadData() {

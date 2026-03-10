@@ -37,7 +37,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 });
 
 async function checkAllServers() {
-    console.log("checkAllServers");
+    // console.log("checkAllServers");
     chrome.storage.sync.get({
         servers: [],
         friends: [],
@@ -68,7 +68,7 @@ async function checkServer(server, friends, allFriends, serverStatusCache) {
         const response = await fetch(`${API_BASE}${encodeURIComponent(server.ip)}`);
         const data = await response.json();
 
-        console.log(`checkServer - ${server.id}`);
+        // console.log(`checkServer - ${server.id}`);
 
         const localData = await chrome.storage.local.get("lastPlayerStates");
         let lastPlayerStates = localData.lastPlayerStates || {};
@@ -107,37 +107,32 @@ async function checkServer(server, friends, allFriends, serverStatusCache) {
 
 function checkPlayerChanges(server, currentPlayers, friends, allFriends, lastPlayerStates) {
     const lastPlayers = lastPlayerStates[server.id] || [];
-    console.log(`lastPlayers for ${server.name}: ${lastPlayers}`);
     const currentPlayerNames = currentPlayers.map(p => p.name);
-    console.log(`currentPlayerNames for ${server.name}: ${currentPlayerNames}`);
     const lastPlayerNames = lastPlayers.map(p => p.name);
-    console.log(`lastPlayerNames for ${server.name}: ${lastPlayerNames}`);
 
     // sendNotification(`ID: ${server.id}, Name: ${server.name}`, {
     //     contextMessage: `previous players: ${lastPlayerNames}; current players: ${currentPlayerNames}`
     // });
 
-    // Check for players who joined
     const newPlayerNames = currentPlayerNames.filter(name => !lastPlayerNames.includes(name));
-    console.log(`newPlayerNames: ${newPlayerNames}`);
+    // console.log(`newPlayerNames: ${newPlayerNames}`);
     for (let index = 0; index < Math.min(newPlayerNames.length, 4); index++) {
         const name = newPlayerNames[index];
         const uuid = currentPlayers.find(p => p.name == name).uuid;
         if (allFriends || friends.includes(name)) {
-            console.log("sending notif about a joiner...");
+            // console.log("sending notif about a joiner...");
             sendNotification(`🎉 ${name} joined ${server.name} MC Server!`, {
                 iconUrl: `https://minotar.net/avatar/${uuid}/32.png`
             });
         }
     }
 
-    // Check for players who left
     const quitterPlayerNames = lastPlayerNames.filter(name => !currentPlayerNames.includes(name));
-    console.log(`quitterPlayerNames: ${quitterPlayerNames}`);
+    // console.log(`quitterPlayerNames: ${quitterPlayerNames}`);
     for (let index = 0; index < Math.min(quitterPlayerNames.length, 4); index++) {
         const name = quitterPlayerNames[index];
         if (allFriends || friends.includes(name)) {
-            console.log("sending notif about a quitter...");
+            // console.log("sending notif about a quitter...");
             sendNotification(`👋 ${name} left ${server.name} MC Server!`);
         }
     }
@@ -153,7 +148,7 @@ function updateBadge(status) {
         const friendCount = status.players.length;
         if (friendCount > 0) {
             chrome.action.setBadgeText({ text: friendCount.toString() });
-            chrome.action.setBadgeBackgroundColor({ color: '#709b53' });
+            chrome.action.setBadgeBackgroundColor({ color: '#477A1E' });
         } else {
             chrome.action.setBadgeText({ text: '' });
         }

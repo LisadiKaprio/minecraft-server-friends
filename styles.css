@@ -1,4 +1,14 @@
-/* Custom styles for Minecraft Server Friends extension */
+:root {
+  --mc-dark-green: #477A1E;
+  --mc-green: #70B237;
+  --mc-light-green: #8FCA5C;
+  --mc-dark-brown: #61371F;
+  --mc-brown: #854F2B;
+  --mc-light-brown: #C28340;
+  --mc-grey: #D0C5C0;
+  --mc-dark-grey: #a59c96;
+  --lisa-grey: #fafaf9;
+}
 
 * {
     margin: 0;
@@ -7,19 +17,96 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #111827;
-    color: #ffffff;
+    font-family: "Courier New", monospace;
+    background-color: var(--lisa-grey);
+    color: #1c1917;
     width: 100%;
     min-height: 100vh;
 }
 
 /* Layout & Container */
 .popup-container {
-    width: 384px;
+    width:300px;
     max-height: 384px;
     display: flex;
     flex-direction: column;
+}
+
+.header-tabs {
+    display: flex;
+    border-bottom: 1px solid #d6d3d1;
+}
+
+.header-tab {
+    font-family: "Courier New", monospace;
+    flex: 1;
+    padding: 12px 16px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.15rem;
+    line-height: 75%;
+    cursor: pointer;
+}
+
+.header-tab:hover {
+    background-color: var(--mc-grey);
+}
+
+.tab-active {
+    background-color: var(--mc-green);
+    cursor: auto !important;
+}
+
+.tab-active:hover {
+    background-color: var(--mc-green) !important;
+}
+
+#dashboard-content {
+    flex:1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.server-status {
+    margin-bottom: 12px;
+}
+
+.server-status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.server-name {
+    font-family: "Courier New", monospace;
+    font-weight: 700;
+}
+
+.online-count {
+    /* background-color: var(--mc-light-green); */
+    color: var(--mc-green);
+    border: 1px var(--mc-green) solid;
+    font-weight: 900;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+}
+
+.offline-status {
+    color: var(--mc-brown);
+    border: 1px var(--mc-brown) solid;
+    font-weight: 900;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+}
+
+.players-list {
+    gap: 0px;
+}
+
+.message {
+    color: var(--mc-dark-grey);
+    font-size: 14px;
 }
 
 .flex {
@@ -153,12 +240,6 @@ body {
 .text-gray-400 {
     color: #9CA3AF;
 }
-
-/* Colors & Backgrounds */
-.bg-gray-900 {
-    background-color: #111827;
-}
-
 .bg-gray-800 {
     background-color: #1F2937;
 }
@@ -288,6 +369,24 @@ input[type="checkbox"] {
 .player-name {
     font-size: 14px;
     font-weight: 500;
+}
+
+.expand-players-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #3B82F6;
+    border: 1px solid #3B82F6;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.expand-players-btn:hover {
+    background-color: rgba(59, 130, 246, 0.3);
 }
 
 .server-item {
