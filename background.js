@@ -74,21 +74,25 @@ async function checkServer(server, friends, allFriends, serverStatusCache) {
         let lastPlayerStates = localData.lastPlayerStates || {};
 
         // Check if server is online and has valid player data
-        if (data.online && data.players && data.players.list instanceof Array) {
+        if (data.online && data.players) {
             const currentPlayers = data.players.list;
             serverStatusCache[server.id] = {
                 online: true,
                 players: currentPlayers,
+                playerAmount: data.players.online,
                 serverName: server.name,
                 motd: data.motd?.clean?.[0] || 'A Minecraft Server'
             };
 
             // Check for player changes
-            checkPlayerChanges(server, currentPlayers, friends, allFriends, lastPlayerStates);
+            if (currentPlayers) {
+                checkPlayerChanges(server, currentPlayers, friends, allFriends, lastPlayerStates);
+            }
         } else {
             // Server is offline
             serverStatusCache[server.id] = {
                 online: false,
+                playerAmount: 0,
                 players: []
             };
             lastPlayerStates[server.id] = [];
@@ -145,7 +149,7 @@ function checkPlayerChanges(server, currentPlayers, friends, allFriends, lastPla
 function updateBadge(status) {
     // const status = serverStatusCache[serverId];
     if (status && status.online) {
-        const friendCount = status.players.length;
+        const friendCount = status.playerAmount || 0;
         if (friendCount > 0) {
             chrome.action.setBadgeText({ text: friendCount.toString() });
             chrome.action.setBadgeBackgroundColor({ color: '#477A1E' });

@@ -8,6 +8,7 @@
   --mc-light-brown-60: rgba(194, 131, 64, 0.6);
   --mc-light-brown-30: rgba(194, 131, 64, 0.3);
   --mc-grey: #D0C5C0;
+  --mc-grey-90: rgba(208, 197, 192, 0.9);
   --mc-grey-60: rgba(208, 197, 192, 0.6);
   --mc-grey-50: rgba(208, 197, 192, 0.5);
   --mc-grey-30: rgba(208, 197, 192, 0.3);
@@ -73,7 +74,9 @@ body {
 }
 
 .server-status {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px var(--mc-grey) solid;
+    padding-bottom: 12px;
 }
 
 .server-status-header {
@@ -236,15 +239,10 @@ button {
 }
 
 .expand-players-btn {
+    font-family: "Courier New", monospace;
     width: 100%;
     margin-top: 8px;
     padding: 8px 12px;
-    border: 1px solid var(--mc-light-brown);
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s ease;
 }
 
 .expand-players-btn:hover {
@@ -351,13 +349,17 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--mc-grey-60);
+  background-color: var(--mc-grey-90);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--mc-grey-50);
+  background-color: var(--mc-grey-60);
 }
 
+hr{
+    margin: 8px 0;
+    color: var(--mc-grey-30);
+}
 
 /* Loading spinner */
 .spinner {

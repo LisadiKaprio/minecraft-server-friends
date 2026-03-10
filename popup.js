@@ -190,6 +190,7 @@ function attachEventListeners() {
         btn.addEventListener('click', function() {
             const serverId = parseInt(this.dataset.serverId);
             setPrimaryServer(serverId);
+            checkNow();
         });
     });
 
@@ -247,7 +248,7 @@ function refreshServerStatus() {
                 </span>
             </div>
             <div class="players-list">
-                <p class="message">Loading...</p>
+                <p class="message" style="padding: 12px;">Player details not available for this server :(</p>
             </div>
         `;
 
@@ -269,11 +270,13 @@ function updateServerStatusUI(serverId, serverStatus) {
     const playerCount = statusElement.querySelector('.player-count');
     const playersList = statusElement.querySelector('.players-list');
 
-    if (serverStatus && serverStatus.online && serverStatus.players) {
+    if (serverStatus && serverStatus.online && serverStatus.playerAmount) {
         offlineStatus.style.display = 'none';
         onlineCount.style.display = 'inline-block';
-        playerCount.textContent = serverStatus.players.length;
-        renderPlayersList(serverStatus.players, playersList);
+        playerCount.textContent = serverStatus.playerAmount;
+        if (serverStatus.players) {
+            renderPlayersList(serverStatus.players, playersList);
+        }
     } else {
         onlineCount.style.display = 'none';
         offlineStatus.style.display = 'inline-block';
@@ -311,7 +314,7 @@ function renderPlayersList(players, playersList) {
 
     if (players.length > maxVisiblePlayers && !isExpanded) {
         html += `
-            <button class="expand-players-btn">
+            <button class="expand-players-btn btn-primary">
                 Show all ${players.length} players
             </button>
         `;
