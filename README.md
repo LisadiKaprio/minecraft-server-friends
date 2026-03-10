@@ -54,4 +54,6 @@ In the dashboard, you can see these infos for the servers you added:
 - **Server Status**: https://api.mcsrvstat.us/3/
 - **Player Avatars**: https://minotar.net/
 
+⚠️ Warning: API provider caches the server's response for 2 minutes, so this chrome extension may notify about new and left players as well as update player lists **with a 2 minute delay**.
+
 
