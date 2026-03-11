@@ -278,9 +278,16 @@ function updateServerStatusUI(serverId, serverStatus) {
             renderPlayersList(serverStatus.players, playersList);
         }
     } else {
-        onlineCount.style.display = 'none';
-        offlineStatus.style.display = 'inline-block';
-        playersList.innerHTML = '<p class="message">Server is offline</p>';
+        if (serverStatus.online) {
+            offlineStatus.style.display = 'none';
+            onlineCount.style.display = 'inline-block';
+            playerCount.textContent = 0;
+            playersList.innerHTML = '<p class="message">No players online</p>';
+        } else {
+            onlineCount.style.display = 'none';
+            offlineStatus.style.display = 'inline-block';
+            playersList.innerHTML = '<p class="message">Server is offline</p>';
+        }
     }
 }
 
